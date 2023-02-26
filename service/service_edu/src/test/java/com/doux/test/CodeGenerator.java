@@ -11,6 +11,8 @@ import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import org.junit.Test;
 
+import java.util.HashMap;
+
 /**
  * @author
  * @since 2018/12/13
@@ -30,7 +32,7 @@ public class CodeGenerator {
         gc.setAuthor("ZT");
         gc.setOpen(false); //生成后是否打开资源管理器
         gc.setFileOverride(false); //重新生成时文件是否覆盖
-        gc.setServiceName("%sService");	//去掉Service接口的首字母I
+        gc.setServiceName("%sService");    //去掉Service接口的首字母I
         gc.setIdType(IdType.ID_WORKER_STR); //主键策略
         gc.setDateType(DateType.ONLY_DATE);//定义生成的实体类中日期类型
         gc.setSwagger2(true);//开启Swagger2模式
@@ -58,7 +60,7 @@ public class CodeGenerator {
 
         // 5、策略配置
         StrategyConfig strategy = new StrategyConfig();
-        strategy.setInclude("edu_teacher");
+        strategy.setInclude("edu_subject");
         strategy.setNaming(NamingStrategy.underline_to_camel);//数据库表映射到实体的命名策略
         strategy.setTablePrefix(pc.getModuleName() + "_"); //生成实体时去掉表前缀
 
@@ -75,4 +77,54 @@ public class CodeGenerator {
         mpg.execute();
     }
 
+    @Test
+    public void test() {
+        String s = "abcabcbb";
+        int i = lengthOfLongestSubstring(s);
+        System.out.println(i);
+    }
+
+    public int balancedString(String s) {
+        int[] count = new int[26];
+        int len = s.length();
+
+        for (int i = 0; i < len; i++) {
+            count[s.charAt(i) - 'A']++;
+        }
+
+        int left = 0, right = 0;
+        int res = len;
+        int average = len / 4;
+
+        while (right < len) {
+            //滑动窗口里进来一个元素 就把count里的这个值减1
+            count[s.charAt(right) - 'A']--;
+            //如果四个元素都符合要求 就计算最小值
+            while (left < len && count['Q' - 'A'] <= average && count['W' - 'A'] <= average && count['E' - 'A'] <= average && count['R' - 'A'] <= average) {
+                res = Math.min(res, right - left + 1);
+                //移动左指针 看能不能缩小范围
+                count[s.charAt(left) - 'A']++;
+                left++;
+            }
+            right++;
+        }
+
+        return res;
+    }
+    public int lengthOfLongestSubstring(String s) {
+        if (s.length()==0) return 0;
+        HashMap<Character, Integer> map = new HashMap<Character, Integer>();
+        int max = 0;
+        int left = 0;
+        for(int i = 0; i < s.length(); i ++){
+            if(map.containsKey(s.charAt(i))){
+                left = Math.max(left,map.get(s.charAt(i)) + 1);
+            }
+            map.put(s.charAt(i),i);
+            max = Math.max(max,i-left+1);
+        }
+
+        return max;
+
+    }
 }

@@ -1,6 +1,5 @@
 package com.doux.edu.controller;
 
-
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.doux.commonutils.R;
@@ -16,14 +15,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * <p>
  * 讲师 前端控制器
- * </p>
  *
  * @author ZT
  * @since 2023-02-07
  */
 @RestController
+@CrossOrigin
 @RequestMapping("/edu/teacher")
 public class TeacherController {
     @Autowired
@@ -33,7 +31,6 @@ public class TeacherController {
     @GetMapping("/findAll")
     public R findAll() {
         List<Teacher> teacherList = teacherService.list(null);
-        int i = 10 / 0;
         return R.ok().data("items", teacherList);
 
     }
@@ -59,6 +56,14 @@ public class TeacherController {
         return R.ok().data("total", total).data("rows", pageRecords);
     }
 
+    /**
+     * 分页查询带条件
+     *
+     * @param current
+     * @param limit
+     * @param teacherQuery
+     * @return
+     */
     @PostMapping("/pageTeacherCondition/{current}/{limit}")
     public R pageTeacherCondition(@ApiParam(value = "当前页")
                                   @PathVariable Long current, @PathVariable Long limit,
